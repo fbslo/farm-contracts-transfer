@@ -184,8 +184,8 @@ contract LionsDen is Ownable {
             pool.lpToken.safeTransferFrom(address(msg.sender), address(this), _amount);
             if(pool.depositFeeBP > 0){
                 uint256 depositFee = _amount.mul(pool.depositFeeBP).div(10000);
-                pool.lpToken.safeTransfer(feeAddress, depositFee);
                 user.amount = user.amount.add(_amount).sub(depositFee);
+                pool.lpToken.safeTransfer(feeAddress, depositFee);
             }else{
                 user.amount = user.amount.add(_amount);
             }
