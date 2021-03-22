@@ -241,12 +241,14 @@ contract LionsDen is Ownable {
     // Update dev address by the previous dev.
     function dev(address _devaddr) public {
         require(msg.sender == devaddr, "dev: wut?");
+        require(_devaddr != 0x0000000000000000000000000000000000000000, 'devaddr != 0x0');
         devaddr = _devaddr;
         emit SetDevAddress(msg.sender, _devaddr);
     }
 
     function setFeeAddress(address _feeAddress) public {
         require(msg.sender == feeAddress, "setFeeAddress: FORBIDDEN");
+        require(_devaddr != 0x0000000000000000000000000000000000000000, 'devaddr != 0x0');
         feeAddress = _feeAddress;
         emit SetFeeAddress(msg.sender, _feeAddress);
     }
