@@ -226,11 +226,13 @@ contract LionsDen is Ownable {
     // Safe cub transfer function, just in case if rounding error causes pool to not have enough CUBs.
     function safeCubTransfer(address _to, uint256 _amount) internal {
         uint256 cubBal = cub.balanceOf(address(this));
+        bool transferSuccess = false;
         if (_amount > cubBal) {
-            cub.transfer(_to, cubBal);
+            transferSuccess = cub.transfer(_to, cubBal);
         } else {
-            cub.transfer(_to, _amount);
+            transferSuccess = cub.transfer(_to, _amount);
         }
+        require(transferSuccess, "safeCubTransfer: transfer failed");
     }
 
     // Update dev address by the previous dev.
