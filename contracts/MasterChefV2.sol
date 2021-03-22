@@ -69,6 +69,9 @@ contract LionsDen is Ownable {
     event Deposit(address indexed user, uint256 indexed pid, uint256 amount);
     event Withdraw(address indexed user, uint256 indexed pid, uint256 amount);
     event EmergencyWithdraw(address indexed user, uint256 indexed pid, uint256 amount);
+    event SetFeeAddress(address indexed user, address indexed newAddress);
+    event SetDevAddress(address indexed user, address indexed newAddress);
+    event UpdateEmissionRate(address indexed user, uint256 cubPerBlock);
 
     constructor(
         CubToken _cub,
@@ -239,16 +242,19 @@ contract LionsDen is Ownable {
     function dev(address _devaddr) public {
         require(msg.sender == devaddr, "dev: wut?");
         devaddr = _devaddr;
+        emit SetDevAddress(msg.sender, _devaddr);
     }
 
     function setFeeAddress(address _feeAddress) public {
         require(msg.sender == feeAddress, "setFeeAddress: FORBIDDEN");
         feeAddress = _feeAddress;
+        emit SetFeeAddress(msg.sender, _feeAddress);
     }
 
     //LeoFi has to add hidden dummy pools inorder to alter the emission, here we make it simple and transparent to all.
     function updateEmissionRate(uint256 _cubPerBlock) public onlyOwner {
         massUpdatePools();
         cubPerBlock = _cubPerBlock;
+        emit UpdateEmissionRate(msg.sender, _cubPerBlock);
     }
 }
