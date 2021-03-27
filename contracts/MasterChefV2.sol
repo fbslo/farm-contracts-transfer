@@ -98,7 +98,6 @@ contract LionsDen is Ownable {
     }
 
     // Add a new lp to the pool. Can only be called by the owner.
-    // XXX DO NOT add the same LP token more than once. Rewards will be messed up if you do.
     function add(uint256 _allocPoint, IBEP20 _lpToken, uint16 _depositFeeBP, bool _withUpdate) public onlyOwner nonDuplicated(_lpToken) {
         require(_depositFeeBP <= 10000, "add: invalid deposit fee basis points");
         if (_withUpdate) {
@@ -113,6 +112,7 @@ contract LionsDen is Ownable {
             accCubPerShare: 0,
             depositFeeBP: _depositFeeBP
         }));
+        poolExistence[_lpToken] = true;
     }
 
     // Update the given pool's CUB allocation point and deposit fee. Can only be called by the owner.
