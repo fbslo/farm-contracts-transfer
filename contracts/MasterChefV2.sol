@@ -23,7 +23,7 @@ contract TokenFarm is Ownable {
         uint256 amount;         // How many LP tokens the user has provided.
         uint256 rewardDebt;     // Reward debt. See explanation below.
         //
-        // We do some fancy math here. Basically, any point in time, the amount of Tokens
+        // We do some fancy math here. Basically, any point in time, the amount of tokens
         // entitled to a user but is pending to be distributed is:
         //
         //   pending reward = (user.amount * pool.accTokenPerShare) - user.rewardDebt
@@ -38,9 +38,9 @@ contract TokenFarm is Ownable {
     // Info of each pool.
     struct PoolInfo {
         IBEP20 lpToken;           // Address of LP token contract.
-        uint256 allocPoint;       // How many allocation points assigned to this pool. Tokens to distribute per block.
-        uint256 lastRewardBlock;  // Last block number that Tokens distribution occurs.
-        uint256 accTokenPerShare;   // Accumulated Tokens per share, times 1e12. See below.
+        uint256 allocPoint;       // How many allocation points assigned to this pool. tokens to distribute per block.
+        uint256 lastRewardBlock;  // Last block number that tokens distribution occurs.
+        uint256 accTokenPerShare;   // Accumulated tokens per share, times 1e12. See below.
         uint16 depositFeeBP;      // Deposit fee in basis points
     }
 
@@ -129,7 +129,7 @@ contract TokenFarm is Ownable {
         return _to.sub(_from).mul(BONUS_MULTIPLIER);
     }
 
-    // View function to see pending Tokens on frontend.
+    // View function to see pending tokens on frontend.
     function pendingToken(uint256 _pid, address _user) external view returns (uint256) {
         PoolInfo storage pool = poolInfo[_pid];
         UserInfo storage user = userInfo[_pid][_user];
@@ -225,7 +225,7 @@ contract TokenFarm is Ownable {
         emit EmergencyWithdraw(msg.sender, _pid, amount);
     }
 
-    // Safe token transfer function, just in case if rounding error causes pool to not have enough Tokens.
+    // Safe token transfer function, just in case if rounding error causes pool to not have enough tokens.
     function safeTokenTransfer(address _to, uint256 _amount) internal {
         uint256 TokenBal = token.balanceOf(address(this));
         bool transferSuccess = false;
@@ -240,14 +240,14 @@ contract TokenFarm is Ownable {
     // Update dev address by the previous dev.
     function dev(address _devaddr) public {
         require(msg.sender == devaddr, "dev: wut?");
-        require(_devaddr != 0x0, 'devaddr != 0x0');
+        require(_devaddr != address(0x0), 'devaddr != 0x0');
         devaddr = _devaddr;
         emit SetDevAddress(msg.sender, _devaddr);
     }
 
     function setFeeAddress(address _feeAddress) public {
         require(msg.sender == feeAddress, "setFeeAddress: FORBIDDEN");
-        require(_devaddr != 0x0, 'devaddr != 0x0');
+        require(_feeAddress != address(0x0), 'feeaddr != 0x0');
         feeAddress = _feeAddress;
         emit SetFeeAddress(msg.sender, _feeAddress);
     }
